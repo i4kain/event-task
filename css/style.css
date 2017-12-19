@@ -7,6 +7,14 @@ body {
 .container {
     width: 406px;
     margin: 20px auto;    
+    /* border: 2px solid lime; */
+    /* padding: 2px; */
+    /* font-size: 0; */
+}
+
+.dropdown {
+    width: 406px;
+    /* margin: 20px auto;     */
     border: 2px solid lime;
     padding: 2px;
     font-size: 0;
@@ -31,4 +39,12 @@ body {
     vertical-align: top;
     margin-left: 2px;
     cursor: pointer;
+}
+
+.dropdown__select {
+    width: 100%;
+}
+
+.display-none {
+    display: none;
 }
