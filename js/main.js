@@ -54,7 +54,7 @@ input.onkeyup = (event) => {
     if(value === prevValue) return;
     
     prevValue = value;
-    cash = '';
+    //cash = '';
 
     const searchedData = data.filter((elem) => {
         return elem.label.toLowerCase().indexOf(value.toLowerCase()) === 0;
