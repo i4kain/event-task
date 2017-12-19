@@ -37,7 +37,7 @@ dropdown.onclick = (event) => {
     if(!isFit(select))
         container.insertBefore(select, dropdown);
 
-    input.value = '';
+    //input.value = '';
     input.focus();   
     
     window.onresize = window.onscroll = document.body.onclick =  () => {
