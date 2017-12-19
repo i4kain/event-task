@@ -3,7 +3,7 @@ const dropdown = document.querySelector('.dropdown');
 const input = document.querySelector('.dropdown__input');
 const btn = document.querySelector('.dropdown__btn');
 let prevValue = '';
-let isChecked = false;
+let cash = '';
 let select;
 
 dropdown.onclick = (event) => {    
@@ -25,10 +25,10 @@ dropdown.onclick = (event) => {
     select.onclick = (event) => {
         const target = event.target;    
         if(target.tagName.toLowerCase() !== "option")
-            return;
-        
-        isChecked = true;
-        input.value = target.text;
+            return;        
+              
+        cash = target.text;
+        input.value = cash;
         closeSelect();               
     };
 
@@ -37,12 +37,13 @@ dropdown.onclick = (event) => {
     if(!isFit(select))
         container.insertBefore(select, dropdown);
 
-    //input.value = '';
+    cash = input.value;
+    input.value = '';
     input.focus();   
     
     window.onresize = window.onscroll = document.body.onclick =  () => {
-        if(!select) return;
-        if(!isChecked) input.value = '';
+        if(!select) return;         
+        input.value = cash;
         closeSelect();
     }
 };
@@ -51,9 +52,9 @@ input.onkeyup = (event) => {
     const value = input.value;
 
     if(value === prevValue) return;
-
-    isChecked = false;
+    
     prevValue = value;
+    cash = '';
 
     const searchedData = data.filter((elem) => {
         return elem.label.toLowerCase().indexOf(value.toLowerCase()) === 0;
