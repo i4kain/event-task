@@ -1,8 +1,7 @@
 const SELECT_MAX_SIZE = 5;
 
 function createDropDown(container, data) {    
-    let cache = '';
-    let isRefreshed = false;
+    let cache = '';    
 
     const dropdown = document.createElement('div');
     dropdown.classList.add('dropdown');
@@ -55,12 +54,9 @@ function createDropDown(container, data) {
     function closeDropdown(event) {
         if(!isSelectVisible()) return;         
         dropdownInput.value = cache;
-        hideSelect();
-
-        if(isRefreshed) {
-            refreshSelect(select, data);
-            isRefreshed = false;
-        }
+        
+        hideSelect();        
+        refreshSelect(select, data);            
         deleteHandlers();
     }
     
@@ -71,12 +67,9 @@ function createDropDown(container, data) {
               
         cache = target.text;
         dropdownInput.value = cache;
-        hideSelect();
 
-        if(isRefreshed) {
-            refreshSelect(select, data);
-            isRefreshed = false;
-        } 
+        hideSelect();        
+        refreshSelect(select, data);            
         deleteHandlers();
     }
 
@@ -86,8 +79,7 @@ function createDropDown(container, data) {
             return elem.label.toLowerCase().indexOf(value.toLowerCase()) === 0;
         });
     
-        refreshSelect(select, searchedData);
-        isRefreshed = true;
+        refreshSelect(select, searchedData);        
     }
     
     function deleteHandlers(){
