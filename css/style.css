@@ -28,7 +28,7 @@ body {
     border: 2px solid greenyellow;
 }
 
-.dropdown__btn {
+.dropdown__button {
     display: inline-block;
     box-sizing: border-box;
     height: 44px;
@@ -45,6 +45,6 @@ body {
     width: 100%;
 }
 
-.display-none {
+.dropdown__select--hidden {
     display: none;
 }

@@ -12,7 +12,7 @@ function createDropDown(container, data) {
     dropdownInput.classList.add('dropdown__input');
     
     const dropdownButton = document.createElement('button')
-    dropdownButton.classList.add('dropdown__btn');
+    dropdownButton.classList.add('dropdown__button');
 
     const select = createSelect(
         data, 
@@ -21,61 +21,66 @@ function createDropDown(container, data) {
         }
     );
     select.classList.add('dropdown__select');
-    select.classList.add('display-none');
+    hideSelect();
 
     dropdown.appendChild(dropdownInput);
     dropdown.appendChild(dropdownButton);
     dropdown.appendChild(select);
 
-    dropdown.addEventListener('click', clickOnDDHandler);
-    dropdownInput.addEventListener('keyup', keyUpOnDDInputHandler);
-    select.addEventListener('click', clickOnSelectHandler);   
+    dropdown.addEventListener('click', dropdownClickHandler);
+    dropdownInput.addEventListener('keyup', inputHandler);
+    select.addEventListener('click', itemSelectHandler);   
 
     container.appendChild(dropdown);
 
-    function clickOnDDHandler(event) {    
+    function dropdownClickHandler(event) {    
         const target = event.target;   
     
         event.stopPropagation();
         
-        if((target !== dropdownInput && target !== dropdownButton) || !select.classList.contains('display-none'))
+        if((target !== dropdownInput && target !== dropdownButton) || isSelectVisible())
             return;   
         
-        select.classList.remove('display-none')
-        if(isRefreshed) {
-            refreshSelect(select, data);
-            isRefreshed = false;
-        }        
+        showSelect();                
     
         cache = dropdownInput.value;
         dropdownInput.value = '';
         dropdownInput.focus();   
         
-        window.addEventListener('resize', toCloseSelectHandler);
-        window.addEventListener('scroll', toCloseSelectHandler);
-        document.body.addEventListener('click', toCloseSelectHandler);
+        window.addEventListener('resize', closeDropdown);
+        window.addEventListener('scroll', closeDropdown);
+        document.body.addEventListener('click', closeDropdown);
     }
     
-    function toCloseSelectHandler(event) {
-        if(select.classList.contains('display-none')) return;         
+    function closeDropdown(event) {
+        if(!isSelectVisible()) return;         
         dropdownInput.value = cache;
-        select.classList.add('display-none');
+        hideSelect();
+
+        if(isRefreshed) {
+            refreshSelect(select, data);
+            isRefreshed = false;
+        }
         deleteHandlers();
     }
     
-    function clickOnSelectHandler(event) {        
+    function itemSelectHandler(event) {        
         const target = event.target;    
         if(target.tagName.toLowerCase() !== "option")
             return;        
               
         cache = target.text;
         dropdownInput.value = cache;
-        select.classList.add('display-none');
-        refreshSelect(this, data);
+        hideSelect();
+
+        if(isRefreshed) {
+            refreshSelect(select, data);
+            isRefreshed = false;
+        } 
         deleteHandlers();
     }
 
-    function keyUpOnDDInputHandler(){
+    function inputHandler(){
         const value = dropdownInput.value;
         const searchedData = data.filter((elem) => {
             return elem.label.toLowerCase().indexOf(value.toLowerCase()) === 0;
@@ -86,8 +91,20 @@ function createDropDown(container, data) {
     }
     
     function deleteHandlers(){
-        window.removeEventListener('resize', toCloseSelectHandler);
-        window.removeEventListener('scroll', toCloseSelectHandler);
-        document.body.removeEventListener('click', toCloseSelectHandler);
-    }    
+        window.removeEventListener('resize', closeDropdown);
+        window.removeEventListener('scroll', closeDropdown);
+        document.body.removeEventListener('click', closeDropdown);
+    }
+    
+    function hideSelect() {
+        select.classList.add('dropdown__select--hidden');
+    }
+    
+    function showSelect() {
+        select.classList.remove('dropdown__select--hidden');
+    }
+    
+    function isSelectVisible() {
+        return !select.classList.contains('dropdown__select--hidden');
+    }
 }
